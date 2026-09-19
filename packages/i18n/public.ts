@@ -1,4 +1,4 @@
-export const locales = ['ro','hu','de','it'] as const;
+export const locales = ['ro','hu','de','it','ru','pl','bg','cs','sk','el'] as const;
 export type Locale = typeof locales[number];
 export type Messages = Record<string,string>;
 export function isLocale(value:string):value is Locale{return locales.some(locale=>locale===value);}
