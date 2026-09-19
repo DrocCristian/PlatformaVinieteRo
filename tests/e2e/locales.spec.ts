@@ -36,6 +36,7 @@ for(const c of cases)test(c.locale+' public pages and planner are translated',as
  await page.locator('.trip-review a').first().click();
  await expect(page.locator('.catalog-country')).toHaveCount(9);
  await expect(page.locator('.locale-links a[lang=it]')).toHaveAttribute('href','/it/catalog');
+ await page.locator('.locale-selector summary').click();
  await page.locator('.locale-links a[lang=ro]').click();
  await expect(page).toHaveURL(/\/catalog$/);
  await expect(page.getByRole('heading',{name:'Catalogul vinietelor',exact:true})).toBeVisible();
