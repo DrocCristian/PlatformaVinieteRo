@@ -1,5 +1,6 @@
 'use server';
 import { redirect } from 'next/navigation';
+import {technicalSchema} from '../../packages/domain/vehicle-profile';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { supabaseServer } from '../../lib/supabase/server';
@@ -66,8 +67,18 @@ export async function saveProfile(_:ActionState,data:FormData):Promise<ActionSta
 export async function addVehicle(_:ActionState,data:FormData):Promise<ActionState>{
  const parsed=vehicleSchema.safeParse(Object.fromEntries(data));
  if(!parsed.success)return {error:parsed.error.issues[0].message};
+ let technical:unknown;
+ try{technical=JSON.parse(String(data.get('technical')??'null'));}catch{return {error:'Verifică datele din talon.'};}
+ const profile=technicalSchema.safeParse(technical);
+ if(!profile.success)return {error:'Verifică masele, categoria și datele remorcii.'};
  const {db,user}=await currentUser();
- const {error}=await db.from('vehicles').insert({...parsed.data,user_id:user.id});
+ const id=data.get('id');
+ if(id&&!z.uuid().safeParse(id).success)return {error:'Vehicul invalid.'};
+ const values={...parsed.data,technical:profile.data};
+ const {error,data:rows}=id
+ ?await db.from('vehicles').update(values).eq('id',String(id)).eq('user_id',user.id).select('id')
+ :await db.from('vehicles').insert({...values,user_id:user.id}).select('id');
+ if(!error&&!rows?.length)return {error:'Vehiculul nu a putut fi actualizat.'};
  if(error)return {error:error.code==='23505'?'Vehiculul există deja. Verifică și lista vehiculelor arhivate.':unavailable};
  revalidatePath('/cont');return {success:'Vehiculul a fost salvat.'};
 }

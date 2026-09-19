@@ -1,6 +1,8 @@
 'use client';
-import {useActionState} from 'react';
+import {useActionState,useState} from 'react';
 import Link from 'next/link';
+import VehicleDetails from './vehicle-details';
+import {emptyTechnical,readTechnical} from '../packages/domain/vehicle-profile';
 import {signIn,signUp,recoverPassword,saveProfile,addVehicle,changePassword} from '../app/(account)/actions';
 import {registrationCountries} from '../packages/domain/account';
 import type {ActionState} from '../packages/domain/account';
@@ -20,12 +22,13 @@ export function ProfileForm({name}:{name:string}){
  const [state,action,pending]=useActionState(saveProfile,{});
  return <form action={action}><label htmlFor="display_name">Cum te numești?</label><input id="display_name" name="display_name" defaultValue={name} maxLength={80} autoComplete="name"/><Feedback state={state}/><button className="secondary" disabled={pending}>{pending?'Se salvează…':'Salvează profilul'}</button></form>;
 }
-export function VehicleForm(){
+export function VehicleForm({vehicle}:{vehicle?:{id:string;plate:string;registration_country:string;label:string;technical:unknown}}){
+ const [technical,setTechnical]=useState(()=>readTechnical(vehicle?.technical)??emptyTechnical());
  const [state,action,pending]=useActionState(addVehicle,{});
- return <form action={action}><label htmlFor="saved-plate">Număr de înmatriculare</label><input id="saved-plate" name="plate" placeholder="B 123 ABC" required maxLength={20} autoComplete="off"/>
- <label htmlFor="saved-country">Țara de înmatriculare</label><select id="saved-country" name="registration_country" defaultValue="RO">{registrationCountries.map(c=><option key={c}>{c}</option>)}</select>
- <label htmlFor="vehicle-label">Denumire (opțional)</label><input id="vehicle-label" name="label" placeholder="Mașina familiei" maxLength={60}/>
- <small>Salvarea nu confirmă eligibilitatea pentru o vinietă. Categoria și regulile se vor verifica înainte de achiziție.</small><Feedback state={state}/><button className="primary" disabled={pending}>{pending?'Se salvează…':'Salvează vehiculul'}</button></form>;
+ return <form action={action}><input type="hidden" name="id" value={vehicle?.id??''}/><label htmlFor={'saved-plate-'+(vehicle?.id??'new')}>Număr de înmatriculare</label><input id={'saved-plate-'+(vehicle?.id??'new')} name="plate" defaultValue={vehicle?.plate??''} placeholder="B 123 ABC" required maxLength={20} autoComplete="off"/>
+ <label htmlFor={'saved-country-'+(vehicle?.id??'new')}>Țara de înmatriculare</label><select id={'saved-country-'+(vehicle?.id??'new')} name="registration_country" defaultValue={vehicle?.registration_country??'RO'}>{registrationCountries.map(c=><option key={c}>{c}</option>)}</select>
+ <label htmlFor={'vehicle-label-'+(vehicle?.id??'new')}>Denumire (opțional)</label><input id={'vehicle-label-'+(vehicle?.id??'new')} name="label" defaultValue={vehicle?.label??''} placeholder="Mașina familiei" maxLength={60}/>
+ <VehicleDetails value={technical} onChange={setTechnical}/><small>Salvarea nu confirmă eligibilitatea pentru o vinietă. Categoria și regulile se vor verifica înainte de achiziție.</small><Feedback state={state}/><button className="primary" disabled={pending}>{pending?'Se salvează…':'Salvează vehiculul'}</button></form>;
 }
 export function PasswordForm(){
  const [state,action,pending]=useActionState(changePassword,{});

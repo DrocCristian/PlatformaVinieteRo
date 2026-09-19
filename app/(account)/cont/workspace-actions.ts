@@ -1,4 +1,6 @@
 'use server';
+import {routeRequestSchema} from '../../../packages/domain/route-request';
+import {readTechnical} from '../../../packages/domain/vehicle-profile';
 import {revalidatePath} from 'next/cache';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
@@ -44,3 +46,22 @@ export async function savePreferences(_:ActionState,data:FormData):Promise<Actio
  revalidatePath('/cont/notificari');return {success:'Preferințele au fost salvate. Trimiterea notificărilor va fi disponibilă după activarea serviciului.'};
 }
 
+
+export async function saveRouteJourney(_:ActionState,data:FormData):Promise<ActionState>{
+ const id=z.uuid().safeParse(data.get('vehicle_id'));
+ const route=routeRequestSchema.safeParse(Object.fromEntries(data));
+ if(!id.success)return {error:'Alege un vehicul salvat.'};
+ if(!route.success)return {error:route.error.issues[0].message};
+ const {db,user}=await currentUser();
+ const {data:vehicle,error:readError}=await db.from('vehicles').select('plate,registration_country,technical').eq('id',id.data).eq('user_id',user.id).is('archived_at',null).maybeSingle();
+ if(readError||!vehicle)return {error:'Vehiculul nu este disponibil în contul tău.'};
+ const technical=readTechnical(vehicle.technical);
+ const {error}=await db.from('journeys').insert({
+ user_id:user.id,title:(route.data.origin+' → '+route.data.destination).slice(0,80),
+ plate:vehicle.plate,registration_country:vehicle.registration_country,destinations:[],
+ route_request:route.data,vehicle_snapshot:{...vehicle,technical}
+ });
+ if(error)return {error:'Cursa nu a putut fi salvată. Reîncearcă.'};
+ revalidatePath('/cont/calatorii');
+ return {success:'Cursa a fost salvată. Totalul va putea fi calculat după activarea rutării și tarifelor; nu s-a efectuat nicio plată.'};
+}
