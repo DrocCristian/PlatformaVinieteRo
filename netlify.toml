@@ -1,0 +1,11 @@
+# Only versioned, public image assets are cached long-term.
+# Account pages and documents retain their private/no-store policies.
+[[headers]]
+  for = "/images/alpine-road-v2.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/alpine-road-mobile-v2.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
