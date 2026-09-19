@@ -19,7 +19,7 @@ export default function Home({locale='ro',messages={}}:{locale?:Locale;messages?
               <Link href="/cont" className="language">{t("Contul meu")}</Link>
             </header><LanguageLinks locale={locale} messages={messages}/>
             <section className="hero">
-              <div className="hero-content"><h1>{t("Viniete pentru traseul tău")}</h1><p className="hero-route">{t("Austria ")}<span>→</span>{t(" Ungaria ")}<span>→</span>{t(" România")}</p><h2>{t("Mai multe țări. O singură călătorie.")}</h2>
+              <div className="hero-content"><h1>{t("Viniete digitale pentru Europa")}</h1><p className="hero-route">{t("Alege țările. Pregătește călătoria.")}</p><h2>{t("Mai multe țări. O singură călătorie.")}</h2>
               <div className="hero-features"><span><CheckCircle2/>{t("Planificare simplă")}</span><span><CheckCircle2/>{t("Toate detaliile, într-un loc")}</span><span><CheckCircle2/>{t("Pregătit pentru drum")}</span></div></div>
               <span className="hero-signature">{t("MAI MULT")}<br/>{t("DRUM")}<br/>{t("MAI MULTĂ")}<br/>{t("LIBERTATE")}<i/></span>
             </section>

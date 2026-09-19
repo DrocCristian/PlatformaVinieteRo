@@ -14,7 +14,6 @@
   "Ghid de călătorie": "Sprievodca",
   "Întrebări frecvente": "Časté otázky",
   "Contul meu": "Môj účet (po rumunsky)",
-  "Viniete pentru traseul tău": "Diaľničné známky pre vašu cestu",
   "Austria": "Rakúsko",
   "Ungaria": "Maďarsko",
   "România": "Rumunsko",
@@ -176,5 +175,7 @@
   "MOLDOVA": "MOLDAVSKO",
   "GERMANIA": "NEMECKO",
   "ITALIA": "TALIANSKO",
-  "FRANȚA": "FRANCÚZSKO"
+  "FRANȚA": "FRANCÚZSKO",
+  "Viniete digitale pentru Europa": "Elektronické diaľničné známky pre Európu",
+  "Alege țările. Pregătește călătoria.": "Vyberte krajiny. Pripravte cestu."
 }

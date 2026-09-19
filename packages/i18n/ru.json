@@ -14,7 +14,6 @@
   "Ghid de călătorie": "Путеводитель",
   "Întrebări frecvente": "Частые вопросы",
   "Contul meu": "Мой аккаунт (на румынском)",
-  "Viniete pentru traseul tău": "Виньетки для вашей поездки",
   "Austria": "Австрия",
   "Ungaria": "Венгрия",
   "România": "Румыния",
@@ -176,5 +175,7 @@
   "MOLDOVA": "МОЛДОВА",
   "GERMANIA": "ГЕРМАНИЯ",
   "ITALIA": "ИТАЛИЯ",
-  "FRANȚA": "ФРАНЦИЯ"
+  "FRANȚA": "ФРАНЦИЯ",
+  "Viniete digitale pentru Europa": "Электронные виньетки для Европы",
+  "Alege țările. Pregătește călătoria.": "Выберите страны. Подготовьтесь к поездке."
 }

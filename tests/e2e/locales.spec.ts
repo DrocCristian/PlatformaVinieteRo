@@ -1,14 +1,14 @@
 import {test,expect} from '@playwright/test';
 const cases=[
- {locale:'hu',heading:'E-matricák az utazásodhoz',next:'Tovább a járműhöz',check:'Adatok ellenőrzése',error:'Ehhez az előnézethez',country:'Ausztria'},
- {locale:'de',heading:'Vignetten für deine Reise',next:'Weiter zum Fahrzeug',check:'Daten prüfen',error:'Gib für diese Vorschau',country:'Österreich'},
- {locale:'it',heading:'Vignette per il tuo viaggio',next:'Continua con il veicolo',check:'Verifica i dati',error:'Inserisci da 2 a 12',country:'Austria'},
- {"locale":"ru","heading":"Виньетки для вашей поездки","next":"Перейти к автомобилю","check":"Проверить данные","error":"Для этого предпросмотра введите от 2 до 12 букв или цифр.","country":"Австрия"},
- {"locale":"pl","heading":"Winiety na Twoją podróż","next":"Przejdź do pojazdu","check":"Sprawdź dane","error":"W tym podglądzie wpisz od 2 do 12 liter lub cyfr.","country":"Austria"},
- {"locale":"bg","heading":"Винетки за вашето пътуване","next":"Продължете с превозното средство","check":"Проверете данните","error":"За този преглед въведете между 2 и 12 букви или цифри.","country":"Австрия"},
- {"locale":"cs","heading":"Dálniční známky pro vaši cestu","next":"Pokračovat k vozidlu","check":"Zkontrolovat údaje","error":"Pro tento náhled zadejte 2 až 12 písmen nebo číslic.","country":"Rakousko"},
- {"locale":"sk","heading":"Diaľničné známky pre vašu cestu","next":"Pokračovať k vozidlu","check":"Skontrolovať údaje","error":"Pre tento náhľad zadajte 2 až 12 písmen alebo číslic.","country":"Rakúsko"},
- {"locale":"el","heading":"Βινιέτες για το ταξίδι σας","next":"Συνέχεια με το όχημα","check":"Ελέγξτε τα στοιχεία","error":"Για αυτή την προεπισκόπηση εισαγάγετε 2 έως 12 γράμματα ή ψηφία.","country":"Αυστρία"},
+ {locale:'hu',heading:'Digitális matricák Európában',next:'Tovább a járműhöz',check:'Adatok ellenőrzése',error:'Ehhez az előnézethez',country:'Ausztria'},
+ {locale:'de',heading:'Digitale Vignetten für Europa',next:'Weiter zum Fahrzeug',check:'Daten prüfen',error:'Gib für diese Vorschau',country:'Österreich'},
+ {locale:'it',heading:'Vignette digitali per l’Europa',next:'Continua con il veicolo',check:'Verifica i dati',error:'Inserisci da 2 a 12',country:'Austria'},
+ {"locale":"ru","heading":"Электронные виньетки для Европы","next":"Перейти к автомобилю","check":"Проверить данные","error":"Для этого предпросмотра введите от 2 до 12 букв или цифр.","country":"Австрия"},
+ {"locale":"pl","heading":"Winiety elektroniczne w Europie","next":"Przejdź do pojazdu","check":"Sprawdź dane","error":"W tym podglądzie wpisz od 2 do 12 liter lub cyfr.","country":"Austria"},
+ {"locale":"bg","heading":"Електронни винетки за Европа","next":"Продължете с превозното средство","check":"Проверете данните","error":"За този преглед въведете между 2 и 12 букви или цифри.","country":"Австрия"},
+ {"locale":"cs","heading":"Elektronické dálniční známky pro Evropu","next":"Pokračovat k vozidlu","check":"Zkontrolovat údaje","error":"Pro tento náhled zadejte 2 až 12 písmen nebo číslic.","country":"Rakousko"},
+ {"locale":"sk","heading":"Elektronické diaľničné známky pre Európu","next":"Pokračovať k vozidlu","check":"Skontrolovať údaje","error":"Pre tento náhľad zadajte 2 až 12 písmen alebo číslic.","country":"Rakúsko"},
+ {"locale":"el","heading":"Ψηφιακές βινιέτες για την Ευρώπη","next":"Συνέχεια με το όχημα","check":"Ελέγξτε τα στοιχεία","error":"Για αυτή την προεπισκόπηση εισαγάγετε 2 έως 12 γράμματα ή ψηφία.","country":"Αυστρία"},
 ];
 for(const c of cases)test(c.locale+' public pages and planner are translated',async({page})=>{
  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));

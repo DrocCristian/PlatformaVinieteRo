@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 test('preview flow keeps selection and blocks purchases', async ({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/');
-  await expect(page.getByRole('heading',{name:'Viniete pentru traseul tău'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Viniete digitale pentru Europa'})).toBeVisible();
   await expect(page.locator('[data-map-state=ready]')).toBeVisible({timeout:20000});
   for(const name of ['Austria','Ungaria','România']) await page.getByRole('button',{name:'Elimină '+name,exact:true}).click();
   await expect(page.getByRole('button',{name:'Continuă cu vehiculul'})).toBeDisabled();
