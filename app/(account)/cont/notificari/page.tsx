@@ -1,0 +1,3 @@
+import {currentUser} from '../../../../lib/current-user';
+import {PreferencesForm} from '../../../../components/workspace-forms';
+export default async function Notifications(){const {db,user}=await currentUser();const {data,error}=await db.from('notification_preferences').select('expiration_email,language').eq('user_id',user.id).maybeSingle();return <><h1>Notificări</h1><section className="account-card"><h2>Alege cum primești mementourile</h2>{error?<p role="alert">Preferințele nu au putut fi citite.</p>:<PreferencesForm email={data?.expiration_email??false} language={data?.language??'ro'}/>}</section></>;}

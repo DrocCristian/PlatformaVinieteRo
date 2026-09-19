@@ -11,7 +11,7 @@ export default function Home() {
         <div className="showcase">
           <div className="browser-frame">
             <header className="header">
-              <Link className="brand" href="/" aria-label="PlatformaVinieteRO — acasă"><span className="brand-mark">V<span>↗</span></span><span>Viniete<small>RO</small></span></Link>
+              <Link className="brand" href="/" aria-label="Vignexo — acasă"><span className="brand-mark">V<span>↗</span></span><span>Vignexo</span></Link>
               <nav aria-label="Navigație principală"><Link href="/catalog">Viniete</Link><a className="active" href="#planifica">Planifică traseul</a><a href="#cum-functioneaza">Ghid de călătorie</a><a href="#intrebari">Întrebări frecvente</a></nav>
               <Link href="/cont" className="language">Contul meu</Link><span className="language"><Globe2 size={17}/> RO</span>
             </header>
@@ -34,7 +34,7 @@ export default function Home() {
         <section className="subscriptions" id="abonamente"><div><span className="eyebrow">PENTRU DRUMURILE TALE</span><h2>Călătorești des?</h2><p>Două servicii distincte, cu control asupra fiecărei reînnoiri.</p></div><article><span className="tag">ÎN PREGĂTIRE</span><h3>Reînnoirea vinietelor</h3><p>Autorizare separată pentru vehicul și produs. Disponibilitatea și condițiile vor fi stabilite pentru fiecare țară.</p></article><article><span className="tag">ÎN PREGĂTIRE</span><h3>Abonament de servicii</h3><p>Planuri lunare și anuale, cu vinietele achitate separat. Beneficiile și prețurile urmează să fie definite.</p></article></section>
         <section id="intrebari" className="faq"><h2>Înainte de plecare</h2><details><summary>Pot cumpăra deja o vinietă?</summary><p>Momentan poți explora planificarea călătoriei. Vânzarea se activează separat pentru fiecare țară, după validarea integrării și a condițiilor furnizorului.</p></details><details><summary>Harta calculează traseul și taxele?</summary><p>Harta permite selecția țărilor. Calculul traseului și verificarea drumurilor taxabile nu sunt încă active. Podurile, tunelurile și alte taxe speciale se tratează separat.</p></details></section>
       </main>
-      <footer><span>PlatformaVinieteRO <span className="muted">/ Previzualizare</span></span><a href="#planifica">Înapoi la călătorie ↑</a></footer>
+      <footer><span>Vignexo <span className="muted">/ Previzualizare</span></span><a href="#planifica">Înapoi la călătorie ↑</a></footer>
     </div>
   </>;
 }

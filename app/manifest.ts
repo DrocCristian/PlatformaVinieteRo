@@ -1,0 +1,2 @@
+import type {MetadataRoute} from 'next';
+export default function manifest():MetadataRoute.Manifest{return {name:'Vignexo — călătoriile tale',short_name:'Vignexo',description:'Planifică și păstrează călătoriile tale europene.',start_url:'/',display:'standalone',background_color:'#071a30',theme_color:'#071a30',lang:'ro',icons:[{src:'/vignexo-icon.svg',sizes:'any',type:'image/svg+xml',purpose:'any'}]};}

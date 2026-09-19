@@ -1,0 +1,19 @@
+# Registrul verificărilor pe țări
+19 septembrie 2026. Document de lucru pentru integrare, nu aviz juridic. Toate cele nouă țări rămân blocate pentru vânzare.
+Prețurile afișate de portalurile oficiale nu au fost importate automat în catalogul comercial.
+
+| Țară | Verificări și surse oficiale | Cerința integrării |
+|---|---|---|
+| România | [Norme de distribuție](https://legislatie.just.ro/Public/DetaliiDocumentAfis/280935). Reguli distincte pentru distribuție și comisioane; cercetarea detaliată RO/AT/HU este păstrată separat. | Confirmarea eligibilității EvaMaria Shop SRL, contract, documentație tehnică și ultima formă aplicabilă a normelor. Nu condiționa cumpărarea de abonamente sau costuri nepermise. |
+| Austria | [ASFINAG](https://help.asfinag.at/en/vignette-and-section-tolls/vignette/). Valabilitatea depinde de produs și canalul achiziției. | Confirmarea condițiilor B2B, a perioadei de retragere și a activării; taxe de tronson separate. |
+| Ungaria | [Portalul oficial](https://nemzetiutdij.hu/en). | Confirmarea categoriilor din certificatul auto, produselor naționale/regionale și regulilor de corectare cu furnizorul. |
+| Bulgaria | [Condiții BG Toll](https://web.bgtoll.bg/Content/tc/termsandconditions.html?languageCultureName=en-GB). Vinieta înregistrează numărul, categoria și perioada; clasificarea ansamblului poate impune produs pentru remorcă. | Reguli pentru mase și remorci, produse și momente exacte de activare; corecțiile nu se promit automat. |
+| Cehia | [eDalnice](https://edalnice.gov.cz/en). Portalul descrie vehiculele cu patru roți până la 3,5 t, exceptarea motocicletelor/remorcilor și influența combustibilului asupra tarifului. [Formulare și condiții](https://edalnice.gov.cz/en/downloads-and-links/index.html). | Date de propulsie, scutiri și documente; confirmarea regulilor actuale de modificare și rambursare. |
+| Slovacia | [Produse și clase](https://eznamka.sk/en/evignettes/types-and-prices). Produse de 365/30/10/1 zile; cel de o zi expiră la finalul zilei selectate. Pentru anumite ansambluri peste 3,5 t este necesară și vinieta remorcii. | Nu trata o zi ca 24 ore. Confirmă masa/categoria din certificat. Pagina oficială are o eroare tipografică „356” într-un paragraf; tabelul și explicația precizează 365. |
+| Slovenia | [DARS](https://evinjeta.dars.si/en). Clase 1/2A/2B și identificare după număr/țară de înmatriculare. Încadrarea vehiculului și lista oficială de modele sunt relevante. | Confirmă categoria și excepțiile, inclusiv autorulote. Textul paginii are formulări diferite la pragul de 1,3 m; nu codifica limita fără confirmarea documentației normative. Verifică prelungirile tranzitorii pentru produse anuale. |
+| Elveția | [BAZG FAQ](https://www.bazg.admin.ch/en/faq-vignette-and-e-vignette-purchase). Produs anual valabil 14 luni: decembrie anterior – ianuarie ulterior anului înscris. | Nu modela ca 365 zile de la cumpărare. Schimbarea numărului, titularului și rambursările au condiții distincte. |
+| Moldova | [Întrebări oficiale](https://evinieta.gov.md/Home/FAQ). Taxa privește vehiculele neînmatriculate în Republica Moldova; pentru început în ziua curentă, valabilitatea începe la emiterea confirmării, nu retroactiv. | Acoperire pe perioada relevantă a șederii; verifică tipul vehiculului și datele suplimentare cerute. Folosește ora locală și catalogul actual. |
+
+[Corecții în Slovacia](https://eznamka.sk/en/evignettes/advice-and-help/data-correction-process): portalul distinge termenul achizițiilor online de cel al punctelor cu personal și limitează procedura ulterioară, inclusiv excluderea produsului de o zi. Interfața Vignexo nu trebuie să generalizeze un singur termen de corectare pentru toate țările.
+
+Pentru fiecare regulă comercială se vor păstra: sursă, versiune, dată de efect, data verificării, persoana care a aprobat-o, canalul de distribuție și testele pentru cazurile-limită. Publicarea unui link oficial nu dovedește dreptul Vignexo de revânzare.

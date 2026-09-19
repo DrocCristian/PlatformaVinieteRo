@@ -1,4 +1,4 @@
-# PlatformaVinieteRO
+# Vignexo
 
 Prima fază: aplicație locală Next.js 16 / React 19 / TypeScript / Turbopack.
 
@@ -28,9 +28,9 @@ Deschide http://127.0.0.1:3000. Relay-ul este exclusiv local; serverul și compi
 - Planificatorul păstrează date temporare. Pagina de cont salvează profilul și vehiculele în Supabase.
 - Nicio ofertă, perioadă sau preț inventat; achizițiile sunt blocate.
 - Supabase integrat: conturi, profil și vehicule persistente, cu RLS. Vezi docs/accounts.md pentru configurarea e-mailului.
-- Stripe, conectori furnizori, rutare, admin, PWA instalabilă și notificări: etape următoare.
+- Spațiu client cu călătorii, suport, preferințe, export de date și autentificare TOTP. Administrare pe roluri cu MFA și audit.
 - RO implementat; DE și EN rămân de implementat.
-- Abonamentele de servicii și mandatele de reînnoire sunt concepte separate, neactivate.
+- Stripe test, webhook verificat și coadă persistentă pentru nouă conectori simulați. Configurarea testului integral este încă necesară. Abonamentele și mandatele sunt separate și neactivate.
 - Validarea numărului auto este doar sintactică pentru previzualizare, nu validare juridică sau de eligibilitate.
 
 ## Condiții pentru activare
@@ -53,3 +53,7 @@ La recrearea mediului, bibliotecile Chromium trebuie pregătite din nou. Nu recr
 ## Design inspirat din macheta aprobată
 
 Fundal alpin generat, interfață bleumarin, panou alb și previzualizare mobilă. Harta MapLibre folosește frontiere Natural Earth locale; permite selecția țărilor, fără calcul de traseu ori taxe. Workerul MapLibre este copiat automat prin predev/prebuild; fișierele generate nu se versionează.
+
+## Stadiul curent și activarea
+
+Vezi docs/launch-readiness.md pentru funcțiile disponibile și lista explicită a lucrărilor rămase, inclusiv cele care nu depind de e-mail. Vezi docs/country-review.md pentru sursele și verificările pe țări. Platforma nu este finalizată pentru lansare comercială.
