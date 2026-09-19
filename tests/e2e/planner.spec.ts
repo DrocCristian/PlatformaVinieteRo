@@ -1,0 +1,26 @@
+import { test, expect } from '@playwright/test';
+test('preview flow keeps selection and blocks purchases', async ({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');
+  await expect(page.getByRole('heading',{name:'Viniete pentru traseul tău'})).toBeVisible();
+  await expect(page.locator('[data-map-state=ready]')).toBeVisible({timeout:20000});
+  for(const name of ['Austria','Ungaria','România']) await page.getByRole('button',{name:'Elimină '+name,exact:true}).click();
+  await expect(page.getByRole('button',{name:'Continuă cu vehiculul'})).toBeDisabled();
+  await page.getByRole('button',{name:'Austria',exact:true}).click();
+  await page.getByRole('button',{name:'România',exact:true}).click();
+  await page.getByRole('button',{name:'Continuă cu vehiculul'}).click();
+  await page.getByLabel('Număr de înmatriculare').fill('!');
+  await page.getByRole('button',{name:'Verifică datele'}).click();
+  await expect(page.locator('#plate-error')).toBeVisible();
+  await page.getByLabel('Număr de înmatriculare').fill('B 123 ABC');
+  await page.getByRole('button',{name:'Verifică datele'}).click();
+  await expect(page.locator('.plate-preview').getByText('B123ABC',{exact:true})).toBeVisible();
+  await page.getByRole('checkbox').check();
+  await expect(page.getByRole('button',{name:'Achiziții disponibile în curând'})).toBeDisabled();
+  await page.getByRole('button',{name:'Înapoi'}).click();
+  await page.getByLabel('Număr de înmatriculare').fill('CJ 456 XYZ');
+  await page.getByRole('button',{name:'Verifică datele'}).click();
+  await expect(page.getByRole('checkbox')).not.toBeChecked();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});

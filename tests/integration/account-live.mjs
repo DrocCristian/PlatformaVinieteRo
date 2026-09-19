@@ -1,0 +1,34 @@
+import {chromium} from '@playwright/test';
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const fixture=JSON.parse(fs.readFileSync('work/auth-fixture.json','utf8'));
+const browser=await chromium.launch({headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});
+const page=await browser.newPage({viewport:{width:1280,height:900}});
+try{
+ await page.goto('http://127.0.0.1:3001/autentificare');
+ await page.getByLabel('E-mail',{exact:true}).fill(fixture.email);
+ await page.getByLabel('Parolă',{exact:true}).fill(fixture.password);
+ await page.getByRole('button',{name:'Intră în cont',exact:true}).click();
+ await page.waitForURL('**/cont',{timeout:20000});
+ await page.getByLabel('Cum te numești?').fill('Cont tehnic de verificare');
+ await page.getByRole('button',{name:'Salvează profilul',exact:true}).click();
+ await page.getByRole('status').filter({hasText:'Profilul a fost salvat.'}).waitFor();
+ await page.getByLabel('Număr de înmatriculare',{exact:true}).fill('B 123 TST');
+ await page.getByLabel('Denumire (opțional)').fill('Vehicul de verificare');
+ await page.getByRole('button',{name:'Salvează vehiculul',exact:true}).click();
+ await page.getByText('RO · B123TST',{exact:true}).waitFor();
+ await page.reload();
+ assert.equal(await page.getByLabel('Cum te numești?').inputValue(),'Cont tehnic de verificare');
+ await page.getByRole('button',{name:'Arhivează B123TST',exact:true}).click();
+ await page.getByRole('button',{name:'Restaurează B123TST',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Restaurează B123TST',exact:true}).click();
+ await page.getByRole('button',{name:'Arhivează B123TST',exact:true}).waitFor();
+ await page.screenshot({path:'work/account-authenticated.png',fullPage:true});
+ const cookies=await page.context().cookies();
+ assert.ok(cookies.filter(c=>c.name.startsWith('sb-')).every(c=>c.httpOnly));
+ await page.getByRole('button',{name:'Deconectare',exact:true}).click();
+ await page.waitForURL('**/autentificare');
+ await page.goto('http://127.0.0.1:3001/cont');
+ await page.waitForURL('**/autentificare');
+ console.log('PASS login, profile, vehicle persistence, archive, restore, HttpOnly cookies, logout and protection after logout');
+}finally{await browser.close();}
