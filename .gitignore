@@ -10,3 +10,6 @@ work/
 
 public/vendor/maplibre/
 supabase/.temp/
+
+components/generated/
+public/images/alpine-road*v2.webp

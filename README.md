@@ -52,7 +52,7 @@ La recrearea mediului, bibliotecile Chromium trebuie pregătite din nou. Nu recr
 
 ## Design inspirat din macheta aprobată
 
-Fundal alpin generat, interfață bleumarin, panou alb și previzualizare mobilă. Harta MapLibre folosește frontiere Natural Earth locale; permite selecția țărilor, fără calcul de traseu ori taxe. Workerul MapLibre este copiat automat prin predev/prebuild; fișierele generate nu se versionează.
+Fundal alpin generat, interfață bleumarin, panou alb și previzualizare mobilă. Harta SVG folosește frontierele Natural Earth locale și este randată în HTML, înainte de JavaScript. Permite selecție, zoom și deplasare după mărire; nu calculează trasee sau taxe. Scriptul prepare-assets.mjs generează geometria SVG și fundalurile WebP în predev/prebuild; fișierele generate nu se versionează.
 
 ## Stadiul curent și activarea
 

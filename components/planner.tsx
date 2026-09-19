@@ -1,12 +1,11 @@
 'use client';
 import { useCallback, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
+import EuropeMap from './europe-map';
 import Link from 'next/link';
 import TravelPeriods from './travel-periods';
 import {localToday,validateTravelPeriod,formatTravelDate,type TravelPeriod} from '../packages/domain/catalog';
 import { ArrowRight, CarFront, Check, ChevronRight, Clock3, FileText, Headphones, Info, LockKeyhole, MapPin, Route, ShieldCheck, Smartphone, X } from 'lucide-react';
 import { countries, toggleCountry, normalizePlate, isPreviewPlateValid, type CountryCode } from '../packages/domain/countries';
-const EuropeMap=dynamic(()=>import('./europe-map'),{ssr:false,loading:()=> <div className="map-stage map-status">Se încarcă harta Europei…</div>});
 function Flag({code}:{code:CountryCode}){return <span className={'flag flag-'+code} aria-hidden="true">{code==='CH'?'+':''}</span>;}
 export default function Planner() {
   const [selected,setSelected]=useState<CountryCode[]>(['AT','HU','RO']);
