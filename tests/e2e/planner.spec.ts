@@ -14,9 +14,17 @@ test('preview flow keeps selection and blocks purchases', async ({page})=>{
   await expect(page.locator('#plate-error')).toBeVisible();
   await page.getByLabel('Număr de înmatriculare').fill('B 123 ABC');
   await page.getByRole('button',{name:'Verifică datele'}).click();
+  await expect(page.locator('#period-error')).toContainText('Austria');
+  const future=new Date();future.setFullYear(future.getFullYear()+1);const day=future.toISOString().slice(0,10);
+  for(const country of ['Austria','România']){await page.getByLabel('Intrare în '+country,{exact:true}).fill(day);await page.getByLabel('Ieșire din '+country,{exact:true}).fill(day);}
+  await page.getByRole('button',{name:'Verifică datele'}).click();
   await expect(page.locator('.plate-preview').getByText('B123ABC',{exact:true})).toBeVisible();
   await page.getByRole('checkbox').check();
   await expect(page.getByRole('button',{name:'Achiziții disponibile în curând'})).toBeDisabled();
+  await expect(page.locator('.trip-review>div')).toHaveCount(2);
+  await page.getByRole('button',{name:'Elimină România',exact:true}).click();
+  await expect(page.getByRole('checkbox')).not.toBeChecked();
+  await expect(page.locator('.trip-review>div')).toHaveCount(1);
   await page.getByRole('button',{name:'Înapoi'}).click();
   await page.getByLabel('Număr de înmatriculare').fill('CJ 456 XYZ');
   await page.getByRole('button',{name:'Verifică datele'}).click();

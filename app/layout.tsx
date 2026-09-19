@@ -10,3 +10,5 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
 }
 
 import "./account.css";
+
+import "./catalog.css";
