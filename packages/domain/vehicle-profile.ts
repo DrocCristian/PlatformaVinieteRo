@@ -1,6 +1,8 @@
 import {z} from 'zod';
+import {vinIdentitySchema} from './vehicle-identity.ts';
 const positive=z.number().int().min(1).max(200000).nullable();
 export const technicalSchema=z.object({
+ identity:vinIdentitySchema.optional(),
  kind:z.enum(['car','goods','bus','motorhome']),
  category:z.enum(['M1','M1G','N1','N1G','N2','N3','M2','M3','unknown']),
  f1:positive, f2:positive,
@@ -13,6 +15,7 @@ export const technicalSchema=z.object({
   plate:z.string().trim().toUpperCase().transform(v=>v.replace(/[\s-]+/g,'')).pipe(z.string().regex(/^[A-Z0-9]{2,12}$/)),
   country:z.string().regex(/^[A-Z]{2}$/),
   category:z.enum(['O1','O2','O3','O4','unknown']),
+  identity:vinIdentitySchema.optional(),
   f1:positive,f2:positive,
   axles:z.number().int().min(1).max(10).nullable()
  }).nullable()

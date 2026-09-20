@@ -11,10 +11,10 @@ function Flag({locale}:{locale:Locale}){
  {locale==='el'?<><path fill="#fff" d="M0 0h30v20H0z"/>{[0,2,4,6,8].map(i=><path key={i} fill="#0d5eaf" d={'M0 '+i*20/9+'h30v'+20/9+'H0z'}/>)}<path fill="#0d5eaf" d="M0 0h11.11v11.11H0z"/><path fill="#fff" d="M4.44 0h2.23v11.11H4.44zM0 4.44h11.11v2.23H0z"/></>:null}
  </svg>;
 }
-export default function LanguageLinks({locale,path='',messages={}}:{locale:Locale;path?:string;messages?:Messages}){
+export default function LanguageLinks({locale,path='',messages={},queryPath}:{locale:Locale;path?:string;messages?:Messages;queryPath?:string}){
  const label=translator(messages)('Limba site-ului');
  return <div className="locale-links"><details className="locale-selector" key={locale+path}>
  <summary aria-label={label+': '+names[locale]}><Flag locale={locale}/><span lang={locale}>{names[locale]}</span><span className="locale-chevron" aria-hidden="true">⌄</span></summary>
- <nav className="locale-options" aria-label={label}>{locales.map(language=><Link key={language} prefetch={false} href={localizedPath(language,path)} hrefLang={language} lang={language} aria-current={locale===language?'page':undefined}><Flag locale={language}/><span>{names[language]}</span>{locale===language?<span className="locale-check" aria-hidden="true">✓</span>:null}</Link>)}</nav>
+ <nav className="locale-options" aria-label={label}>{locales.map(language=><Link key={language} prefetch={false} href={queryPath?queryPath+(queryPath.includes('?')?'&':'?')+'lang='+language:localizedPath(language,path)} hrefLang={language} lang={language} aria-current={locale===language?'page':undefined}><Flag locale={language}/><span>{names[language]}</span>{locale===language?<span className="locale-check" aria-hidden="true">✓</span>:null}</Link>)}</nav>
  </details></div>;
 }
