@@ -45,9 +45,19 @@ Elementele eșuate păstrează lease-ul existent și ajung în fluxul existent d
 
 ## PostHog și limite
 
-Singurul proiect identificat prin conector este Default project, ID 279270. Utilizatorul nu a confirmat că aparține Vignexo. Nu este instalat sau activat SDK-ul PostHog, autocapture, session replay ori trackingul utilizatorilor. Nu se trimit evenimente către PostHog.
+Proiectul EU Default project, ID 279270, este asociat Vignexo pentru diagnostic exclusiv în Deploy Previews, cu autorizarea utilizatorului. Înaintea asocierii nu existau evenimente colectate sau domenii configurate. Autocapture, session replay, excepțiile automate, console logs și performance capture sunt dezactivate în proiect; eliminarea IP-urilor este activă.
 
-Pentru etapa următoare: identificarea proiectului corect, configurarea explicită a evenimentelor și a consimțământului necesar, apoi verificarea colectării fără date personale inutile. SMTP și conexiunile comerciale cu furnizorii rămân dependințe separate.
+`vignexo_preview_operation` este un eveniment operațional explicit trimis de server prin Capture API. Nu există SDK în browser, cookies PostHog, pageviews sau identificare persoane. Payloadul este reconstruit dintr-o listă închisă: application, environment, schema_version, synthetic, operation, outcome, code și duration_ms. Nici request_id, digest, provider_code, IP, URL, query, mesaje, stack-uri sau obiecte brute nu sunt trimise. `$process_person_profile=false`, `$geoip_disable=true`. Identificatorul fix `vignexo-preview-server` reprezintă serviciul: numărul de utilizatori/sesiuni din aceste evenimente NU are semnificație.
+
+Aceste evenimente nu sunt integrarea completă Error Tracking și nu generează stack-uri de excepții. Nu măsoară comportamentul browserului, abandonul sau disponibilitatea externă a site-ului. SMTP și conexiunile comerciale rămân separate.
+
+Activarea cere simultan build cu `CONTEXT=deploy-preview`, `POSTHOG_DIAGNOSTICS_ENABLED=true`, proiectul `279270`, token de proiect și host EU `https://eu.i.posthog.com`. Variabilele POSTHOG sunt configurate numai în contextul Netlify Deploy Previews; nu sunt expuse prin NEXT_PUBLIC sau next.config. Gate-ul de build este false în producție, branch deploy și local, inclusiv dacă variabilele runtime există. Dezactivare rapidă: POSTHOG_DIAGNOSTICS_ENABLED=false în preview și redeploy.
+
+Trimiterea este programată prin Next.js `after()`, după răspuns, cu timeout 2 secunde, fără retry, redirecționări sau cookies. Defecțiunile colectării nu modifică rezultatul operației; în logul serverului apare numai un mesaj fix. Colectarea este best-effort, fără coadă persistentă. Eșecurile de înregistrare a callbackului în afara unui request sunt ignorate.
+
+Test sintetic explicit: într-un mediu controlat cu variabilele de preview, `node scripts/verify-posthog.ts` trimite o operație server.request/completed cu synthetic=true. Nu este rulat automat la build sau startup. Un răspuns HTTP reușit nu dovedește ingestia: confirmați evenimentul în proiectul EU 279270. Pentru integrarea `after()` pe deploy, accesați `/auth/callback` fără cod: rezultatul așteptat este auth.callback/callback_missing fără transmiterea URL-ului. Excludeți synthetic=true din analizele operaționale.
+
+Documentație: https://posthog.com/docs/api/capture și https://nextjs.org/docs/app/api-reference/functions/after.
 
 ## Validare
 
