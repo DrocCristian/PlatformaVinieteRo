@@ -3,15 +3,17 @@ import {translator,localizedPath,type Locale,type Messages} from '../packages/i1
 import { useCallback, useRef, useState } from 'react';
 import VehicleDetails from './vehicle-details';
 import RouteFields,{emptyRoute} from './route-fields';
-import {emptyTechnical,technicalSchema,kindLabels} from '../packages/domain/vehicle-profile';
-import {routeRequestSchema} from '../packages/domain/route-request';
+import {emptyTechnical,kindLabels} from '../packages/domain/vehicle-profile';
+import {validatePlanner,type FieldErrors} from '../packages/domain/planner-validation';
+import {tollSummary} from '../packages/domain/toll-presentation';
+import {focusPlannerField} from './planner-focus';
 import {assessTolls} from '../packages/domain/toll-rules';
 import EuropeMap from './europe-map';
 import Link from 'next/link';
 import TravelPeriods from './travel-periods';
-import {localToday,validateTravelPeriod,formatTravelDate,type TravelPeriod} from '../packages/domain/catalog';
+import {formatTravelDate,type TravelPeriod} from '../packages/domain/catalog';
 import { ArrowRight, CarFront, Check, ChevronRight, Clock3, FileText, Headphones, Info, LockKeyhole, MapPin, Route, ShieldCheck, Smartphone, X } from 'lucide-react';
-import { countries, toggleCountry, normalizePlate, isPreviewPlateValid, type CountryCode } from '../packages/domain/countries';
+import { countries, toggleCountry, normalizePlate, type CountryCode } from '../packages/domain/countries';
 function Flag({code}:{code:CountryCode}){return <span className={'flag flag-'+code} aria-hidden="true">{code==='CH'?'+':''}</span>;}
 export default function Planner({locale='ro',messages={}}:{locale?:Locale;messages?:Messages}) {
  const t=translator(messages);
@@ -23,12 +25,15 @@ export default function Planner({locale='ro',messages={}}:{locale?:Locale;messag
   const [registration,setRegistration]=useState('RO');
   const [confirmed,setConfirmed]=useState(false);
   const [periods,setPeriods]=useState<Partial<Record<CountryCode,TravelPeriod>>>({});
-  const [periodError,setPeriodError]=useState('');
-  const [error,setError]=useState('');
+  const [fieldErrors,setFieldErrors]=useState<FieldErrors>({});
+  const error=fieldErrors.plate??'';
+  const periodIssues=Object.entries(fieldErrors).filter(([field])=>/^(entry|exit)-/.test(field));
+  const periodError=periodIssues.map(([field,message])=>t(countries.find(c=>c.code===field.split('-')[1])!.name)+': '+t(message)).join(' ');
+  function clearErrors(){setFieldErrors({});}
   const titleRef=useRef<HTMLHeadingElement>(null);
   const chosen=selected.map(code=>countries.find(country=>country.code===code)!);
   const onToggle=useCallback((code:CountryCode)=>{setSelected(current=>toggleCountry(current,code));setConfirmed(false);},[]);
-  function goTo(next:number){setStep(next);setError('');setPeriodError('');requestAnimationFrame(()=>titleRef.current?.focus());}
+  function goTo(next:number){setStep(next);clearErrors();requestAnimationFrame(()=>titleRef.current?.focus());}
   return <section className="planner" id="planifica" aria-label={t("Planificarea călătoriei")}>
     <div className="planner-grid">
       <div className="selection">
@@ -37,12 +42,20 @@ export default function Planner({locale='ro',messages={}}:{locale?:Locale;messag
           <p className="map-disclaimer">{t("Harta selectează țări; nu calculează traseul sau taxele speciale.")}</p>
         </>:<div className="vehicle-panel"><ol className="progress">{[t("Țările tale"),t("Vehicul"),t("Verificare")].map((label,i)=><li key={label} className={step===i+1?'current':''} aria-current={step===i+1?'step':undefined}><span>{i+1}</span>{label}</li>)}</ol>
           <h2 ref={titleRef} tabIndex={-1}>{step===2?t("Cu ce vehicul pleci?"):t("Verifică planul călătoriei")}</h2>
-          {step===2?<form id="vehicle-form" onSubmit={event=>{event.preventDefault();setPeriodError('');if(!isPreviewPlateValid(plate)){setError(t("Introdu între 2 și 12 litere sau cifre pentru această previzualizare."));return;}if(!technicalSchema.safeParse(technical).success){setError(t('Verifică datele din talon și ale remorcii.'));return;}if(Object.values(route).some(Boolean)&&!routeRequestSchema.safeParse(route).success){setError(t('Completează plecarea, destinația și perioada corectă.'));return;}for(const code of selected){const problem=validateTravelPeriod(periods[code]??{entry:'',exit:''},localToday());if(problem){setError('');setPeriodError(t(countries.find(c=>c.code===code)!.name)+': '+t(problem));return;}}goTo(3);}}>
+          {step===2?<form id="vehicle-form" noValidate onSubmit={event=>{
+            event.preventDefault();
+            const form=event.currentTarget;
+            const next=validatePlanner(plate,technical,route,selected,periods);
+            setFieldErrors(next);
+            const first=Object.keys(next)[0];
+            if(first){requestAnimationFrame(()=>focusPlannerField(form,Object.keys(next)));return;}
+            goTo(3);
+          }}>
             <p className="intro">{t("Datele rămân în această pagină și se șterg la reîncărcare.")}</p><label htmlFor="registration">{t("Țara de înmatriculare")}</label><select id="registration" value={registration} onChange={e=>{setRegistration(e.target.value);setConfirmed(false);}}>{[...countries,{code:'DE',name:t("Germania")},{code:'FR',name:t("Franța")},{code:'IT',name:t("Italia")},{code:'OTHER',name:t("Altă țară — eligibilitate de verificat")}].map(country=><option key={country.code} value={country.code}>{t(country.name)}</option>)}</select>
-            <label htmlFor="plate">{t("Număr de înmatriculare")}</label><input id="plate" value={plate} maxLength={20} placeholder={t("Ex. B 123 ABC")} autoComplete="off" aria-invalid={!!error} aria-describedby={error?'plate-error':'plate-help'} onChange={e=>{setPlate(e.target.value);setConfirmed(false);setError('');}}/><small id="plate-help">{t("Validarea specifică țării se va face înainte de achiziție.")}</small>{error?<p id="plate-error" role="alert" className="error">{error}</p>:null}
-            <VehicleDetails messages={messages} value={technical} onChange={v=>{setTechnical(v);setConfirmed(false);}}/><RouteFields messages={messages} value={route} onChange={setRoute}/><p className="info-note"><Info size={16}/>{t("Eligibilitatea se verifică separat pentru fiecare produs.")}</p>
-          <TravelPeriods messages={messages} selected={selected} periods={periods} error={periodError} onChange={(code,value)=>{setPeriods(current=>({...current,[code]:value}));setConfirmed(false);setPeriodError('');}}/>
-          </form>:<><p className="intro">{t("Asigură-te că numărul și țara de înmatriculare sunt corecte.")}</p><div className="plate-preview"><span>{registration==='OTHER'?'—':registration}</span><strong>{normalizePlate(plate)}</strong></div>{route.origin&&<p>{route.origin} → {route.destination}</p>}<p>{t(kindLabels[technical.kind])} · {technical.f1??'—'} kg{technical.trailer?' + '+t('Remorcă'):''}</p><div className="trip-review" aria-label={t("Perioadele călătoriei")}>{chosen.map(country=><div key={country.code}><strong>{t(country.name)}</strong><small>{(()=>{const rule=assessTolls(country.code,technical,registration,periods[country.code]?.entry??'',periods[country.code]?.exit??'');return rule.system==='review'?t('De verificat'):(rule.needsReview?t('De verificat')+': ':'')+rule.system+' '+(rule.vehicleClass??'')+(rule.trailer==='separate'?' + '+t('Remorcă'):'');})()}</small><small>{formatTravelDate(periods[country.code]?.entry??'')} → {formatTravelDate(periods[country.code]?.exit??'')}</small><Link href={localizedPath(locale,'/catalog')+'#'+country.code}>{t("Vezi disponibilitatea vinietelor")}</Link></div>)}</div><label className="confirmation"><input type="checkbox" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/><span>{t("Confirm datele vehiculului și perioadele călătoriei. Un număr sau o categorie greșită poate invalida o vinietă.")}</span></label><p className="info-note"><Info size={16}/>{t("Perioadele și prețurile vor fi afișate din catalogul autorizat. Nu s-a creat nicio comandă.")}</p><button className="primary" disabled>{confirmed?t("Achiziții disponibile în curând"):t("Confirmă datele pentru previzualizare")}</button></>}
+            <label htmlFor="plate">{t("Număr de înmatriculare")}</label><input id="plate" data-planner-field="plate" value={plate} maxLength={20} placeholder={t("Ex. B 123 ABC")} autoComplete="off" aria-invalid={!!error} aria-describedby={error?'plate-error':'plate-help'} onChange={e=>{setPlate(e.target.value);setConfirmed(false);clearErrors();}}/><small id="plate-help">{t("Validarea specifică țării se va face înainte de achiziție.")}</small>{error?<p id="plate-error" role="alert" className="error">{t(error)}</p>:null}
+            <VehicleDetails errors={fieldErrors} messages={messages} value={technical} onChange={v=>{setTechnical(v);setConfirmed(false);clearErrors();}}/><RouteFields errors={fieldErrors} messages={messages} value={route} onChange={v=>{setRoute(v);setConfirmed(false);clearErrors();}}/><p className="info-note"><Info size={16}/>{t("Eligibilitatea se verifică separat pentru fiecare produs.")}</p>
+          <TravelPeriods invalidFields={periodIssues.map(([field])=>field)} messages={messages} selected={selected} periods={periods} error={periodError} onChange={(code,value)=>{setPeriods(current=>({...current,[code]:value}));setConfirmed(false);clearErrors();}}/>
+          </form>:<><p className="intro">{t("Asigură-te că numărul și țara de înmatriculare sunt corecte.")}</p><div className="plate-preview"><span>{registration==='OTHER'?'—':registration}</span><strong>{normalizePlate(plate)}</strong></div>{route.origin&&<p>{route.origin} → {route.destination}</p>}<p>{t(kindLabels[technical.kind])} · {technical.f1??'—'} kg{technical.trailer?' + '+t('Remorcă'):''}</p><div className="trip-review" aria-label={t("Perioadele călătoriei")}>{chosen.map(country=><div key={country.code}><strong>{t(country.name)}</strong>{(()=>{const rule=assessTolls(country.code,technical,registration,periods[country.code]?.entry??'',periods[country.code]?.exit??'');return <><small>{tollSummary(rule,t)}</small>{rule.reasons.length>0&&<ul className="assessment-reasons">{rule.reasons.map(reason=><li key={reason}>{t(reason)}</li>)}</ul>}{rule.needsReview&&<button type="button" className="review-edit" onClick={()=>goTo(2)}>{t('Verifică datele')}</button>}</>;})()}<small>{formatTravelDate(periods[country.code]?.entry??'')} → {formatTravelDate(periods[country.code]?.exit??'')}</small><Link href={localizedPath(locale,'/catalog')+'#'+country.code}>{t("Vezi disponibilitatea vinietelor")}</Link></div>)}</div><label className="confirmation"><input type="checkbox" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/><span>{t("Confirm datele vehiculului și perioadele călătoriei. Un număr sau o categorie greșită poate invalida o vinietă.")}</span></label><p className="info-note"><Info size={16}/>{t("Perioadele și prețurile vor fi afișate din catalogul autorizat. Nu s-a creat nicio comandă.")}</p><button className="primary" disabled>{confirmed?t("Achiziții disponibile în curând"):t("Confirmă datele pentru previzualizare")}</button></>}
           <div className="form-actions"><button className="secondary" onClick={()=>goTo(step-1)}>{t("← Înapoi")}</button>{step===2?<button className="primary" type="submit" form="vehicle-form">{t("Verifică datele")}<ArrowRight size={17}/></button>:null}</div>
         </div>}
       </div>
