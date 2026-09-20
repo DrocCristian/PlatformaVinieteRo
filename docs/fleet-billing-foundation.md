@@ -80,3 +80,6 @@ Rutele pentru camioane trebuie să țină cont ulterior de înălțime, lățime
 ## Acceptanță
 
 Douăzeci de mașini ale aceleiași firme pot forma o comandă și, dacă emitentul/modelul permit, o factură cu 20 de poziții/anexă. O a doua descărcare păstrează factura. Un raport anual nu refacturează nimic. O mașină a altei firme nu poate fi accesată prin schimbarea ID-ului. O plată confirmată cu emitere incompletă nu apare ca flotă complet acoperită. Produsul neaprobat nu poate deveni plătibil prin modificarea datelor din browser.
+
+## Actualizare 20 septembrie 2026
+Migrarea a fost aplicată în proiectul Supabase după testarea locală a izolării. Comenzile noi cu durate pe vehicul sunt descrise în purchase-workspace.md. Vânzarea și facturarea rămân inactive. Versiunile locale ale migrărilor corespund istoricului remote.

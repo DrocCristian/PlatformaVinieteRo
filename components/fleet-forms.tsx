@@ -15,17 +15,17 @@ export function CompanyForm({company}:{company?:{id:string;name:string;tax_id:st
  <label>E-mail contabilitate<input name="billing_email" type="email" required defaultValue={company?.billing_email}/></label>
  <button className="primary" disabled={pending}>{pending?'Se salvează…':'Salvează firma'}</button></form>;
 }
-export function FleetAssetForm({companyId}:{companyId:string}){
+export function FleetAssetForm({companyId,asset}:{companyId:string;asset?:FleetAsset}){
  const [state,action,pending]=useActionState(saveFleetAsset,initial);
- return <form action={action}><Status state={state}/><input type="hidden" name="company_id" value={companyId}/>
- <label>Tip vehicul<select name="kind">{Object.entries(assetKinds).map(([key,label])=><option key={key} value={key}>{label}</option>)}</select></label>
- <div className="date-pair"><label>Număr înmatriculare<input name="plate" required maxLength={20}/></label><label>Țara înmatriculării<input name="registration_country" pattern="[A-Z]{2}" maxLength={2} required defaultValue="RO"/></label></div>
- <label>Denumire internă<input name="label" maxLength={80} placeholder="Ex. Camion 12 / Depozit Timișoara"/></label>
+ return <form action={action}><Status state={state}/><input type="hidden" name="company_id" value={companyId}/><input type="hidden" name="asset_id" value={asset?.id??''}/>
+ <label>VIN / seria de șasiu<input name="vin" defaultValue={asset?.identity?.vin??''} maxLength={32}/></label><label className="workspace-check"><input name="legacyVin" type="checkbox" defaultChecked={asset?.identity?.legacyVin??false}/>Serie nestandard pentru vehicul vechi</label><label>Tip vehicul{asset&&<input type="hidden" name="kind" value={asset.kind}/>}<select name="kind" disabled={!!asset} defaultValue={asset?.kind??'car'}>{Object.entries(assetKinds).map(([key,label])=><option key={key} value={key}>{label}</option>)}</select></label>
+ <div className="date-pair"><label>Număr înmatriculare<input name="plate" defaultValue={asset?.plate} readOnly={!!asset} required maxLength={20}/></label><label>Țara înmatriculării<input name="registration_country" pattern="[A-Z]{2}" maxLength={2} required readOnly={!!asset} defaultValue={asset?.registration_country??'RO'}/></label></div>
+ <label>Denumire internă<input name="label" defaultValue={asset?.label} maxLength={80} placeholder="Ex. Camion 12 / Depozit Timișoara"/></label>
  <details><summary>Date tehnice din talon</summary><p>Completează valorile cunoscute. Datele lipsă vor fi cerute înainte de cumpărare.</p>
- <div className="date-pair">{[['f1','F.1 — masa maximă tehnică (kg)'],['f2','F.2 — masa autorizată (kg)'],['f3','F.3 — masa ansamblului (kg)'],['axles','Număr de axe']].map(([name,label])=><label key={name}>{label}<input name={name} type="number" min="1" max={name==='axles'?12:200000}/></label>)}</div>
- <div className="date-pair"><label>Normă EURO<select name="euro"><option value="unknown">Nu cunosc încă</option>{['0','1','2','3','4','5','6','electric'].map(x=><option key={x}>{x}</option>)}</select></label>
- <label>Clasă CO₂<select name="co2_class"><option value="">Nu cunosc încă</option>{[1,2,3,4,5].map(x=><option key={x}>{x}</option>)}</select></label></div></details>
- <button className="primary" disabled={pending}>{pending?'Se salvează…':'Adaugă în flotă'}</button></form>;
+ <div className="date-pair">{[['f1','F.1 — masa maximă tehnică (kg)'],['f2','F.2 — masa autorizată (kg)'],['f3','F.3 — masa ansamblului (kg)'],['axles','Număr de axe']].map(([name,label])=><label key={name}>{label}<input name={name} defaultValue={asset?.[name as 'f1'|'f2'|'f3'|'axles']??''} type="number" min="1" max={name==='axles'?12:200000}/></label>)}</div>
+ <div className="date-pair"><label>Normă EURO<select name="euro" defaultValue={asset?.euro??'unknown'}><option value="unknown">Nu cunosc încă</option>{['0','1','2','3','4','5','6','electric'].map(x=><option key={x}>{x}</option>)}</select></label>
+ <label>Clasă CO₂<select name="co2_class" defaultValue={asset?.co2_class??''}><option value="">Nu cunosc încă</option>{[1,2,3,4,5].map(x=><option key={x}>{x}</option>)}</select></label></div></details>
+ <button className="primary" disabled={pending}>{pending?'Se salvează…':asset?'Salvează vehiculul':'Adaugă în flotă'}</button></form>;
 }
 export function FleetBatchForm({companyId,assets}:{companyId:string;assets:FleetAsset[]}){
  const [state,action,pending]=useActionState(saveFleetBatch,initial);

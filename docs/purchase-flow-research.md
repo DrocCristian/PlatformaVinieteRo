@@ -62,3 +62,6 @@ Formular în memorie, fără salvare VIN sau cereri în baza de date, fără pre
 
 
 Pentru Bulgaria, durata de 24 ore și weekendul vineri 12:00–duminică 23:59, inclusiv achiziția sâmbătă/duminică fără retroactivitate, sunt descrise de [distribuitorul UBB, condiții actualizate 2026](https://ubb.bg/downloads/Document/397/en/General-Terms-e-Vignette-via-UBB-Mobile-EN-vsila-03022026_2.pdf). Condițiile propriului canal Vignexo vor fi verificate separat.
+
+## Actualizare: integrarea cu contul
+Formularul demonstrativ rămâne în memorie. Ruta autentificată /cumpara poate salva ciorne cu vehiculele contului sau flotei. Detalii și limite actualizate în purchase-workspace.md. Formularul principal este localizat; notele juridice detaliate sunt încă în română.

@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {vinIdentitySchema} from './vehicle-identity.ts';
 import {isCalendarDate} from './catalog.ts';
 
 export const fleetCountries=['AT','HU','RO','BG','CZ','SK','SI','CH','MD'] as const;
@@ -12,6 +13,7 @@ export const companySchema=z.object({
 export const assetKinds={car:'Autoturism',van:'Autoutilitară',truck:'Camion',tractor:'Cap tractor',trailer:'Remorcă',semitrailer:'Semiremorcă'} as const;
 const mass=z.number().int().min(1).max(200000).nullable();
 export const fleetAssetSchema=z.object({
+ identity:vinIdentitySchema.optional(),
  plate:z.string().trim().toUpperCase().transform(v=>v.replace(/[\s-]+/g,'')).pipe(z.string().regex(/^[A-Z0-9]{2,12}$/)),
  registration_country:z.string().regex(/^[A-Z]{2}$/),
  label:z.string().trim().max(80),

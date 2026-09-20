@@ -27,15 +27,20 @@ export async function saveFleetAsset(_:ActionState,data:FormData):Promise<Action
  const company=z.uuid().safeParse(data.get('company_id'));
  const raw:Record<string,unknown>=Object.fromEntries(data);
  for(const key of ['f1','f2','f3','axles','co2_class'])raw[key]=raw[key]?Number(raw[key]):null;
+ raw.identity={vin:String(data.get('vin')??''),legacyVin:data.get('legacyVin')==='on'};
  const asset=fleetAssetSchema.safeParse(raw);
  if(!company.success||!asset.success)return {error:asset.error?.issues[0]?.message??'Selectează firma.'};
  try{
   const {db,user}=await context();
   const owner=await db.from('fleet_companies').select('id').eq('id',company.data).eq('owner_id',user.id).maybeSingle();
   if(owner.error||!owner.data)return {error:'Firma nu este disponibilă în contul tău.'};
-  const {error}=await db.from('fleet_assets').insert({...asset.data,company_id:company.data});
+  const id=data.get('asset_id');
+  if(id&&!z.uuid().safeParse(id).success)return {error:'Vehicul invalid.'};
+  const {identity,label,f1,f2,f3,axles,euro,co2_class}=asset.data;
+  const result=id?await db.from('fleet_assets').update({identity,label,f1,f2,f3,axles,euro,co2_class}).eq('id',String(id)).eq('company_id',company.data).select('id'):await db.from('fleet_assets').insert({...asset.data,company_id:company.data}).select('id');
+  const error=result.error||!result.data?.length;
   if(error)return {error:'Vehiculul nu a putut fi salvat. Verifică dacă numărul există deja în flotă.'};
-  revalidatePath('/cont/firma');return {success:'Vehiculul a fost adăugat în flotă.'};
+  revalidatePath('/cont/firma');return {success:'Vehiculul a fost salvat în flotă.'};
  }catch(e){unstable_rethrow(e);return {error:'Salvarea nu este disponibilă momentan.'};}
 }
 export async function saveFleetBatch(_:ActionState,data:FormData):Promise<ActionState>{
