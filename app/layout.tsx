@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ro"><body>{children}<OfflineRegistration/></body></html>;
+  return <html lang="ro"><head><link rel="preload" as="image" href="/images/alpine-road-v2.webp" media="(min-width: 701px)" fetchPriority="high"/><link rel="preload" as="image" href="/images/alpine-road-mobile-v2.webp" media="(max-width: 700px)" fetchPriority="high"/></head><body>{children}<OfflineRegistration/></body></html>;
 }
 
 import "./account.css";
