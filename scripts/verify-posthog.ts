@@ -6,9 +6,9 @@ createOperation('server.request',value=>record=value).finish('success','complete
 const status=await sendDiagnostic(record,{
  previewBuild:process.env.CONTEXT==='deploy-preview'?'true':'false',
  enabled:process.env.POSTHOG_DIAGNOSTICS_ENABLED,
- projectId:process.env.POSTHOG_PROJECT_ID,
+ projectId:'279270',
  token:process.env.POSTHOG_PROJECT_TOKEN,
- host:process.env.POSTHOG_HOST,
+ host:'https://eu.i.posthog.com',
 },fetch,true);
 console.log(JSON.stringify({status,event:'vignexo_preview_operation',synthetic:true,project:279270}));
 if(status!=='sent')process.exitCode=1;

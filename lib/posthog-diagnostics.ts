@@ -4,7 +4,8 @@ import {diagnosticsEnabled,sendDiagnostic} from '../packages/domain/posthog-diag
 import type {DiagnosticRecord} from '../packages/domain/telemetry';
 
 export function scheduleDiagnostic(record:DiagnosticRecord){
- const config={previewBuild:process.env.VIGNEXO_DIAGNOSTICS_PREVIEW,enabled:process.env.POSTHOG_DIAGNOSTICS_ENABLED,projectId:process.env.POSTHOG_PROJECT_ID,token:process.env.POSTHOG_PROJECT_TOKEN,host:process.env.POSTHOG_HOST};
+ // Public destination is fixed to the verified EU preview project; only token and toggle are runtime settings.
+ const config={previewBuild:process.env.VIGNEXO_DIAGNOSTICS_PREVIEW,enabled:process.env.POSTHOG_DIAGNOSTICS_ENABLED,projectId:'279270',token:process.env.POSTHOG_PROJECT_TOKEN,host:'https://eu.i.posthog.com'};
  if(!diagnosticsEnabled(config))return;
  try{
   after(async()=>{
