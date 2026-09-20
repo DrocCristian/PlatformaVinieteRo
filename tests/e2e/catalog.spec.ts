@@ -7,5 +7,5 @@ test('catalog lists all nine countries without offering unverified products',asy
  await expect(page.getByRole('button',{name:/cumpără|plătește/i})).toHaveCount(0);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
  await page.getByRole('link',{name:'← Planifică o călătorie'}).click();
- await expect(page.getByRole('heading',{name:'Viniete digitale pentru Europa'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Mai puține griji. Mai mult drum.'})).toBeVisible();
 });

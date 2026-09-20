@@ -94,5 +94,7 @@
   "Vinieta din acest flux este pentru vehicule înmatriculate în afara Moldovei.": "Αυτή η βινιέτα αφορά οχήματα ταξινομημένα εκτός Μολδαβίας.",
   "Vehiculul necesită o încadrare separată, nu un produs de autoturism.": "Το όχημα απαιτεί χωριστή κατάταξη.",
   "Țara este duplicată.": "Η χώρα έχει επιλεγεί δύο φορές.",
-  "Ex. TM 12 ABC": "TM 12 ABC"
+  "Ex. TM 12 ABC": "TM 12 ABC",
+  "Elimină ": "Αφαίρεση ",
+  "Introdu numărul de înmatriculare (2–12 litere sau cifre).": "Εισαγάγετε την πινακίδα (2–12 γράμματα ή ψηφία)."
 }

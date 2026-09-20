@@ -94,5 +94,7 @@
   "Vinieta din acest flux este pentru vehicule înmatriculate în afara Moldovei.": "Ez a matrica Moldován kívül nyilvántartott járművekhez való.",
   "Vehiculul necesită o încadrare separată, nu un produs de autoturism.": "A jármű külön besorolást igényel.",
   "Țara este duplicată.": "Az ország ismétlődik.",
-  "Ex. TM 12 ABC": "TM 12 ABC"
+  "Ex. TM 12 ABC": "TM 12 ABC",
+  "Elimină ": "Eltávolítás: ",
+  "Introdu numărul de înmatriculare (2–12 litere sau cifre).": "Add meg a rendszámot (2–12 betű vagy szám)."
 }

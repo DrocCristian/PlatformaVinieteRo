@@ -21,19 +21,16 @@ for(const c of cases)test(c.locale+' public pages and planner are translated',as
  await expect(page.locator('link[hreflang="de-DE"]')).toHaveAttribute('href','https://vignexo.com/de');
  await expect(page.locator('.locale-links a')).toHaveCount(10);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
- await page.getByRole('button',{name:c.next,exact:true}).click();
  await page.locator('#plate').fill('!');
- await page.getByRole('button',{name:c.check,exact:true}).click();
- await expect(page.locator('#plate-error')).toContainText(c.error);
- await page.locator('#plate').fill('B 123 ABC');
- await page.getByRole('button',{name:c.check,exact:true}).click();
- await expect(page.locator('#period-error')).toContainText(c.country);
- const future=new Date();future.setFullYear(future.getFullYear()+1);const day=future.toISOString().slice(0,10);
- for(const code of ['AT','HU','RO']){await page.locator('#entry-'+code).fill(day);await page.locator('#exit-'+code).fill(day);}
- await page.getByRole('button',{name:c.check,exact:true}).click();
- await expect(page.locator('.trip-review>div')).toHaveCount(3);
- await expect(page.locator('.trip-review a').first()).toHaveAttribute('href','/'+c.locale+'/catalog#AT');
- await page.locator('.trip-review a').first().click();
+ await page.locator('.purchase-actions button[type=submit]').click();
+ await expect(page.locator('#plate-error')).toBeVisible();
+ await expect(page.locator('#plate-error')).not.toContainText('Introdu numărul');
+ await page.locator('#plate').fill('B123ABC');
+ await page.locator('.purchase-actions button[type=submit]').click();
+ await page.locator('.purchase-countries button').first().click();
+ await expect(page.locator('#duration-AT')).toBeVisible();
+ await expect(page.locator('.purchase-country-card h3')).toContainText(c.country);
+ await page.goto('/'+c.locale+'/catalog');
  await expect(page.locator('.catalog-country')).toHaveCount(9);
  await expect(page.locator('.locale-links a[lang=it]')).toHaveAttribute('href','/it/catalog');
  await page.locator('.locale-selector summary').click();

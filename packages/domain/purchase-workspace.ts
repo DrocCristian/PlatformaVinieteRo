@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {validatePurchaseTechnical} from './purchase-validity.ts';
 import {fleetCountries} from './fleet.ts';
 import {validatePurchaseDraft,type PurchaseDraft,type PurchaseVehicle} from './purchase-preview.ts';
 import {readTechnical} from './vehicle-profile.ts';
@@ -41,7 +42,8 @@ export function snapshotPurchaseBasket(input:unknown,assets:SavedPurchaseVehicle
    if((found.kind==='semitrailer'&&vehicle.kind!=='tractor')||(found.kind==='trailer'&&vehicle.kind==='tractor'))throw Error('Configurația remorcii nu este compatibilă.');
    trailer={id:found.id,plate:found.plate,country:found.registration,vin:found.vin,legacyVin:found.legacyVin,technical:found.technical};
   }
-  return {...entry,vehicle:{...vehicle,trailer},status:'draft' as const};
+  const technicalReview=validatePurchaseTechnical({...vehicle.technical,...Object.fromEntries(Object.entries(trailer?.technical??{}).map(([k,v])=>['trailer-'+k,v]))},vehicle.vehicle,!!trailer,entry.selections.map(s=>s.country));
+  return {...entry,vehicle:{...vehicle,trailer},technicalReview,status:'draft' as const};
  });
  return {...basket,entries,version:1,status:'draft' as const,totalMinor:null,paymentEnabled:false};
 }
