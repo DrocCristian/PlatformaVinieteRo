@@ -2,7 +2,9 @@ import {translator,localizedPath,type Locale,type Messages} from '../packages/i1
 import LanguageLinks from './language-links';
 import Link from 'next/link';
 import { CheckCircle2, Route, ShoppingCart, CreditCard, Mail, ThumbsUp } from 'lucide-react';
-import Planner from './planner';
+import PurchaseDemo from './purchase-demo';
+import {purchaseMessages} from '../packages/i18n/purchase';
+import '../app/cumpara/demo/style.css';
 export default function Home({locale='ro',messages={}}:{locale?:Locale;messages?:Messages}) {
  const t=translator(messages);
   return <div lang={locale}>
@@ -23,7 +25,7 @@ export default function Home({locale='ro',messages={}}:{locale?:Locale;messages?
               <div className="hero-features"><span><CheckCircle2/>{t("Planificare simplă")}</span><span><CheckCircle2/>{t("Toate detaliile, într-un loc")}</span><span><CheckCircle2/>{t("Pregătit pentru drum")}</span></div></div>
               <span className="hero-signature">{t("MAI MULT")}<br/>{t("DRUM")}<br/>{t("MAI MULTĂ")}<br/>{t("LIBERTATE")}<i/></span>
             </section>
-            <Planner locale={locale} messages={messages}/>
+            <section id="planifica" aria-label={t("Planificarea călătoriei")}><PurchaseDemo embedded locale={locale} messages={{...messages,...purchaseMessages(locale)}}/></section>
           </div>
           <div className="signpost" aria-hidden="true"><span>{t("AUSTRIA ↗")}</span><span>{t("UNGARIA ↗")}</span><span>{t("ROMÂNIA ↗")}</span></div>
         </div>
@@ -34,10 +36,9 @@ export default function Home({locale='ro',messages={}}:{locale?:Locale;messages?
           {Icon:Mail,title:t("Primești confirmarea"),text:t("După confirmarea emiterii")},
           {Icon:ThumbsUp,title:t("Te bucuri de călătorie"),text:t("Toate documentele, într-un loc")},
         ].map(({Icon,title,text})=><article key={title}><Icon strokeWidth={1.25}/><h3>{title}</h3><p>{text}</p></article>)}<div className="handwritten">{t("Călătoria")}<br/>{t("care unește.")}</div></section>
-        <section className="subscriptions" id="abonamente"><div><span className="eyebrow">{t("PENTRU DRUMURILE TALE")}</span><h2>{t("Călătorești des?")}</h2><p>{t("Două servicii distincte, cu control asupra fiecărei reînnoiri.")}</p></div><article><span className="tag">{t("ÎN PREGĂTIRE")}</span><h3>{t("Reînnoirea vinietelor")}</h3><p>{t("Autorizare separată pentru vehicul și produs. Disponibilitatea și condițiile vor fi stabilite pentru fiecare țară.")}</p></article><article><span className="tag">{t("ÎN PREGĂTIRE")}</span><h3>{t("Abonament de servicii")}</h3><p>{t("Planuri lunare și anuale, cu vinietele achitate separat. Beneficiile și prețurile urmează să fie definite.")}</p></article></section>
         <section id="intrebari" className="faq"><h2>{t("Înainte de plecare")}</h2><details><summary>{t("Pot cumpăra deja o vinietă?")}</summary><p>{t("Momentan poți explora planificarea călătoriei. Vânzarea se activează separat pentru fiecare țară, după validarea integrării și a condițiilor furnizorului.")}</p></details><details><summary>{t("Harta calculează traseul și taxele?")}</summary><p>{t("Harta permite selecția țărilor. Calculul traseului și verificarea drumurilor taxabile nu sunt încă active. Podurile, tunelurile și alte taxe speciale se tratează separat.")}</p></details></section>
       </main>
-      <footer><span>Vignexo <span className="muted">{t("/ Previzualizare")}</span></span><a href="#planifica">{t("Înapoi la călătorie ↑")}</a></footer>
+      <footer><Link href="/conditii-cumparare">{locale==='ro'?'Condiții de cumpărare':'Purchase conditions (RO)'}</Link><span>Vignexo <span className="muted">{t("/ Previzualizare")}</span></span><a href="#planifica">{t("Înapoi la călătorie ↑")}</a></footer>
     </div>
   </div>;
 }

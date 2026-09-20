@@ -11,9 +11,9 @@ test('lightweight map keeps selection and zoom, uses a compressed background',as
  const requests:string[]=[];page.on('request',r=>requests.push(r.url()));
  await page.goto('/');
  const ro=page.locator('.map-svg [data-country="RO"]');
- await expect(ro).toHaveAttribute('fill','#ef8937');
- await ro.click();await expect(page.getByRole('button',{name:'Elimină România',exact:true})).toHaveCount(0);
- await ro.click();await expect(page.getByRole('button',{name:'Elimină România',exact:true})).toBeVisible();
+ await expect(ro).toHaveAttribute('fill','#102e49');
+ await ro.click();await expect(ro).toHaveAttribute('fill','#ef8937');
+ await ro.click();await expect(ro).toHaveAttribute('fill','#102e49');
  await page.getByRole('button',{name:'Mărește harta',exact:true}).click();
  await expect(page.locator('.map-svg>g')).toHaveAttribute('transform',/scale\(1.5\)/);
  await page.getByRole('button',{name:'Resetează harta',exact:true}).click();
