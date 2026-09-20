@@ -8,8 +8,10 @@ for(const path of ['/','/cumpara/demo'])test('unified purchase flow '+path,async
  await page.getByRole('button',{name:'Austria',exact:true}).click();
  await page.locator('#duration-AT').selectOption('d10');await page.locator('#start-AT').fill('2099-10-01');
  await page.locator('.purchase-actions button[type=submit]').click();
- await expect(page.locator('#technical-category')).toBeFocused();
- await page.locator('#technical-category').fill('M1');await page.locator('#technical-f1').fill('3000');await page.locator('#technical-f2').fill('3000');
+ await expect(page.locator('#car-standard')).toBeFocused();
+ await expect(page.locator('#technical-f1')).toHaveCount(0);
+ await expect(page.locator('#technical-f2')).toHaveCount(0);
+ await page.locator('#car-standard').check();
  await page.locator('.purchase-actions button[type=submit]').click();
  await expect(page.locator('.purchase-review')).toContainText('10.10.2099');
  await expect(page.locator('.purchase-plate')).toContainText('B123ABC');

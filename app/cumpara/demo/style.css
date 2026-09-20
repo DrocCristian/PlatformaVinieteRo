@@ -5,3 +5,16 @@
 .purchase-demo .purchase-validity small{color:#496476;font-size:12px}.purchase-embedded .purchase-primary{background:#26bdeb;color:#082638}.purchase-demo .purchase-type strong{padding-right:24px}
 
 .purchase-technical-review{display:flex;flex-wrap:wrap;gap:14px 24px;padding:14px;background:#f0f5f3;border-radius:8px}.purchase-technical-review dt{font-size:12px;color:#496476}.purchase-technical-review dd{margin:4px 0 0;font-weight:600}
+
+/* Passenger cars: progressive questions instead of the generic registration grid. */
+.passenger-details{border:1px solid #c8dce8;border-radius:18px;padding:24px;margin-top:24px;background:#f5fafc;color:#102f43}
+.passenger-heading{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px}
+.passenger-heading>span{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:#d6f4ed;color:#075e4b;font-weight:700}
+.passenger-heading h3{margin:0 0 6px}.passenger-heading p{margin:0!important;font-size:15px!important;color:#456171!important}
+.passenger-details .passenger-confirm{align-items:flex-start;font-size:16px;line-height:1.6;margin-bottom:10px!important}
+.passenger-details small{display:block;color:#466174;font-size:14px;line-height:1.6}.passenger-details a{color:#00698b;text-decoration:underline}
+.passenger-question{border-top:1px solid #c8dce8;margin-top:20px;padding-top:20px}.passenger-question label{font-size:16px!important;line-height:1.5}.passenger-country{display:block;color:#006780;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.passenger-details select{background:#fff!important;color:#102f43!important;border:1px solid #90abba!important;font-size:16px!important;min-height:48px;width:100%;margin:10px 0;border-radius:10px;padding:12px}
+.passenger-optional{margin:16px 0}.passenger-optional summary{cursor:pointer;padding:10px 0;font-size:15px}.passenger-optional[open]{padding-bottom:12px}.passenger-review{line-height:1.7;padding-left:22px;font-size:15px}
+.purchase-embedded .passenger-details .purchase-check{color:#102f43}.purchase-embedded .passenger-details .purchase-error{color:#b42318}.purchase-embedded .passenger-question label{color:#102f43}
+@media(max-width:600px){.passenger-details{padding:18px 14px}.passenger-heading{gap:10px}.passenger-details select{padding:10px 8px}.passenger-heading h3{font-size:19px}}
