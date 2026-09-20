@@ -10,6 +10,7 @@
     "dev": "next dev --turbopack --hostname 0.0.0.0",
     "build": "next build --turbopack",
     "start": "next start --hostname 0.0.0.0",
+    "pretypecheck": "node scripts/prepare-assets.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "node --test tests/unit/*.test.ts",
