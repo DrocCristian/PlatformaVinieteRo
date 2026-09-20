@@ -1,0 +1,25 @@
+import {readFile} from 'node:fs/promises';
+import {test,expect} from '@playwright/test';
+test('fleet demo groups two cars on one document and filters reports without issuing invoices',async({page},testInfo)=>{
+ await page.goto('/flote/demo');
+ await expect(page.getByText('DEMONSTRAȚIE · date și sume fictive · fără plăți sau facturi fiscale')).toBeVisible();
+ await page.getByRole('button',{name:'Facturi și rapoarte',exact:true}).click();
+ await expect(page.getByRole('cell',{name:'TM01DEMO, TM02DEMO',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'1–15 septembrie',exact:true}).click();
+ await expect(page.getByText('2 poziții',{exact:true})).toBeVisible();
+ await page.getByRole('combobox',{name:'Grupează',exact:true}).selectOption('vehicle');
+ await expect(page.getByText('1 poziții',{exact:true})).toHaveCount(2);
+ await expect(page.getByRole('button',{name:'Descarcă raport CSV'})).toBeEnabled();
+ const [download]=await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Descarcă raport CSV'}).click()]);
+ const file=await download.path();expect(file).not.toBeNull();
+ const csv=await readFile(file!,'utf8');expect(csv).toContain('TM01DEMO');expect(csv).toContain('TM02DEMO');expect(csv).not.toContain('TM03DEMO');
+ await page.getByRole('button',{name:'Comandă comună',exact:true}).click();
+ await page.getByRole('button',{name:'Deselectează toate',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Pregătește comanda demonstrativă'})).toBeDisabled();
+ await page.getByRole('checkbox',{name:'Selectează TM01DEMO',exact:true}).check();
+ await page.getByRole('button',{name:'Pregătește comanda demonstrativă'}).click();
+ await expect(page.getByRole('status')).toContainText('Comandă pregătită pentru 1 vehicule.');
+ await page.getByRole('button',{name:'Privire de ansamblu',exact:true}).click();
+ await page.screenshot({path:testInfo.outputPath('fleet.png'),fullPage:true});
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+});
