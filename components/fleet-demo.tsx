@@ -35,6 +35,6 @@ export default function FleetDemo(){
  {valid&&!selected.length&&<p>Selectează cel puțin un vehicul.</p>}
  <div aria-live="polite">{displayed?.groups.map(g=><div className="fleet-report-row" key={g.label+g.currency}><span>{g.label}<small>{g.count} poziții</small></span><strong>{money(g.grossMinor,g.currency)}</strong></div>)}{displayed&&!displayed.lines.length&&<p>Nu există cheltuieli în intervalul selectat.</p>}</div>
  <button className="fleet-primary" disabled={!displayed?.lines.length} onClick={download}>Descarcă raport CSV</button><p className="fleet-muted">Raportul centralizează documentele existente. Nu creează o factură nouă.</p></section></>}
- <footer className="fleet-footnote">Vinietele și taxele se activează separat pentru fiecare țară, după confirmarea condițiilor și a integrării. <Link href="/cont/firma">Mergi la contul firmei</Link></footer>
+ <footer className="fleet-footnote">Vinietele și taxele se activează separat pentru fiecare țară, după confirmarea condițiilor și a integrării. <Link href="/cont/firma">Mergi la contul firmei</Link> <Link href="/cumpara/demo">Încearcă noul flux de viniete →</Link></footer>
  </main></div>;
 }
