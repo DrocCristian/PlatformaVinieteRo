@@ -1,5 +1,14 @@
 # Only versioned, public image assets are cached long-term.
 # Account pages and documents retain their private/no-store policies.
+
+# Presentation release: enable commercial/workspace features in a later reviewed release.
+[context.production.environment]
+  COMMERCE_MODE = "disabled"
+  FLEET_WORKSPACE_ENABLED = "false"
+  PURCHASE_WORKSPACE_ENABLED = "false"
+  POSTHOG_DIAGNOSTICS_ENABLED = "false"
+  PUBLIC_INDEXING_ENABLED = "false"
+
 [[headers]]
   for = "/images/alpine-road-v2.webp"
   [headers.values]
