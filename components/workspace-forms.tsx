@@ -4,7 +4,7 @@ import {saveJourney,createSupportCase,savePreferences} from '../app/(account)/co
 import type {ActionState} from '../packages/domain/account';
 import {registrationCountries} from '../packages/domain/account';
 import {countries} from '../packages/domain/countries';
-function Feedback({state}:{state:ActionState}){return <>{state.error&&<p role="alert" className="account-error">{state.error}</p>}{state.success&&<p role="status" className="account-success">{state.success}</p>}</>;}
+function Feedback({state}:{state:ActionState}){return <>{state.error&&<p role="alert" className="account-error">{state.error}{state.reference&&<><br/><span>Cod suport: <code>{state.reference}</code></span></>}</p>}{state.success&&<p role="status" className="account-success">{state.success}</p>}</>;}
 export function JourneyForm(){
  const [state,action,pending]=useActionState(saveJourney,{});
  const [selected,setSelected]=useState<string[]>(['RO']);

@@ -7,7 +7,7 @@ import {signIn,signUp,recoverPassword,saveProfile,addVehicle,changePassword} fro
 import {registrationCountries} from '../packages/domain/account';
 import type {ActionState} from '../packages/domain/account';
 function Feedback({state}:{state:ActionState}){
- return <>{state.error&&<p role="alert" className="account-error">{state.error}</p>}{state.success&&<p role="status" className="account-success">{state.success}</p>}</>;
+ return <>{state.error&&<p role="alert" className="account-error">{state.error}{state.reference&&<><br/><span>Cod suport: <code>{state.reference}</code></span></>}</p>}{state.success&&<p role="status" className="account-success">{state.success}</p>}</>;
 }
 export function AuthForm({mode}:{mode:'login'|'signup'|'recover'}){
  const [state,action,pending]=useActionState(mode==='login'?signIn:mode==='signup'?signUp:recoverPassword,{});

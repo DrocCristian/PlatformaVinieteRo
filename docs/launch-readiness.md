@@ -5,6 +5,7 @@ Acest document este un inventar tehnic; nu certifică pregătirea juridică sau 
 ## Disponibil în această versiune
 - Designul aprobat, nouă destinații și perioade de călătorie; catalog comercial blocat.
 - Cont, profil, vehicule, călătorii persistente și arhivare.
+- Diagnostic server cu coduri de suport și rezultate parțiale de emitere; vezi [operational-diagnostics.md](operational-diagnostics.md).
 - Suport în cont, răspuns administrativ auditat, preferințe de notificare.
 - Export personal JSON paginat, inclusiv comenzile și documentele de test; cerere de ștergere gestionată prin suport.
 - Autentificare TOTP; administrare cu rol validat din app_metadata și aal2. Un client nu își poate acorda rol prin user_metadata.
@@ -47,7 +48,7 @@ Informările Supabase privind absența politicilor pe payment_events și issuanc
 - Notificări programate de expirare, livrarea documentelor prin email, flux de ștergere complet și politici de retenție aprobate.
 - Datele complete ale firmei: CUI, registrul comerțului, sediu, reprezentant și date de contact.
 - Termeni finali, informare GDPR, politica de rambursare pe țară, fiscalitate și relația contractuală cu procesatorii, revizuite de specialiști.
-- Procedură de recuperare administrativă MFA, monitorizare operațională, restaurare backup verificată și test de încărcare.
+- Procedură de recuperare administrativă MFA, alerte operaționale externe și monitorizare reală în browser, restaurare backup verificată și test de încărcare.
 
 Activarea emailului rezolvă livrarea mesajelor, nu autorizează vânzarea vinietelor.
 

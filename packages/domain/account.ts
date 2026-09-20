@@ -12,4 +12,4 @@ export const vehicleSchema = z.object({
 export function safeReturnPath(value: string | null): string {
  return value === '/cont/parola' ? value : '/cont';
 }
-export type ActionState = { error?: string; success?: string };
+export type ActionState = { error?: string; success?: string; reference?: string };

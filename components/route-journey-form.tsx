@@ -16,7 +16,7 @@ export default function RouteJourneyForm({vehicles,initialId}:{vehicles:SavedRou
  <p>{technical?kindLabels[technical.kind]+' · '+(technical.f1??'—')+' kg'+(technical.trailer?' · remorcă '+technical.trailer.plate:''):'Completează datele din talon pentru acest vehicul.'} <Link href="/cont">Editează vehiculul</Link></p>
  <RouteFields value={route} onChange={setRoute}/>
  <p>Țările de tranzit și taxele vor fi determinate după conectarea serviciului de rutare. Poți salva cursa acum.</p>
- {state.error&&<p className="account-error" role="alert">{state.error}</p>}{state.success&&<p className="account-success" role="status">{state.success}</p>}
+ {state.error&&<p className="account-error" role="alert">{state.error}{state.reference&&<><br/><span>Cod suport: <code>{state.reference}</code></span></>}</p>}{state.success&&<p className="account-success" role="status">{state.success}</p>}
  <button className="primary" disabled={pending}>{pending?'Se salvează…':'Salvează cursa'}</button>
  </form>;
 }
